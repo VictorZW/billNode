@@ -21,6 +21,7 @@ const responseJSON = (res, ret) => {
   }
 }
 
+// 查询所有账单分类类型
 router.get('/getCategory', (req, res) => {
   pool.getConnection((err, connection) => {
     connection.query(
