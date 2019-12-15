@@ -30,25 +30,25 @@ const responseJSON = (res, ret) => {
     res.json(ret)
   }
 }
-// router.get('/addBill', (req, res, next) => {
-//   pool.getConnection((err, connection) => {
-//     const param = req.query || req.params
-//     connection.query(
-//       billSql.insert,
-//       [param.id, param.pay_date, param.cost, param.category, param.remark],
-//       (err, result) => {
-//         if (result) {
-//           result = {
-//             code: 200,
-//             msg: 'add success!'
-//           }
-//         }
-//         responseJSON(res, result)
-//         connection.release()
-//       }
-//     )
-//   })
-// })
+
+router.get('/getAllBill', (req, res) => {
+  pool.getConnection((err, connection) => {
+    connection.query(
+      billSQL.queryAll,
+      (err, result) => {
+        if (result) {
+          result = {
+            code: 200,
+            msg: '操作成功',
+            result: result
+          }
+        }
+        responseJSON(res, result)
+        connection.release()
+      }
+    )
+  })
+})
 
 router.post('/addBill', (req, res) => {
   console.log(req.body)
