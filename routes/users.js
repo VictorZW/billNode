@@ -36,7 +36,6 @@ const createToken = () => {
 
 // login接口
 router.post('/login', (req, response) => {
-  console.log(req.body)
   const reqData = req.body
   const sentData = {
     appid: wxConfig.AppID,
@@ -55,7 +54,6 @@ router.post('/login', (req, response) => {
       return console.log('err:', err)
     }
     const wxUserData = JSON.parse(body)
-    console.log('wxUserData:', wxUserData)
     // 查看用户是否已经存在
     pool.getConnection((err, connection) => {
       connection.query(
@@ -72,15 +70,17 @@ router.post('/login', (req, response) => {
                 [reqData.username, wxUserData.openid, token, reqData.avatarUrl],
                 (err, result) => {
                   if (result) {
-                    console.log('222')
                     result = {
                       code: 200,
-                      message: '新增用户成功'
+                      message: '新增用户成功',
+                      result: {
+                        username: reqData.username,
+                        token: token
+                      }
                     }
                     responseJSON(response, result)
                     connection.release()
                   } else {
-                    console.log('333')
                     responseJSON(response, err)
                     connection.release()
                   }
@@ -88,7 +88,11 @@ router.post('/login', (req, response) => {
             } else {
               result = {
                 code: 200,
-                message: '用户已存在'
+                message: '用户已存在',
+                result: {
+                  username: result[0].user_name,
+                  token: result[0].token
+                }
               }
               responseJSON(response, result)
               connection.release()
