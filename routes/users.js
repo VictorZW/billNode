@@ -34,13 +34,9 @@ const createToken = () => {
   return str
 }
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource')
-})
-
 // login接口
 router.post('/login', (req, response) => {
+  console.log(req.body)
   const reqData = req.body
   const sentData = {
     appid: wxConfig.AppID,
@@ -66,6 +62,7 @@ router.post('/login', (req, response) => {
         userInfoSql.getUserById,
         [wxUserData.openid],
         (err, result) => {
+          console.log(result)
           if (result) {
             // 如果result.length = 0，说明数据库没有此用户
             if (result.length === 0) {
