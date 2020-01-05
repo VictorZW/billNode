@@ -72,7 +72,7 @@ router.post('/login', (req, response) => {
               const token = createToken()
               connection.query(
                 userInfoSql.insert,
-                [reqData.username, wxUserData.openid, token],
+                [reqData.username, wxUserData.openid, token, reqData.avatarUrl],
                 (err, result) => {
                   if (result) {
                     console.log('222')
