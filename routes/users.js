@@ -6,6 +6,7 @@ const dbConfjg = require('../db/DBConfig')
 const userInfoSql = require('../db/userInfoSql')
 const pool = mysql.createPool(dbConfjg.mysql)
 
+// 小程序的配置
 const wxConfig = {
   'AppID': 'wx02a62b0c804ac0c1',
   'AppSecret': '5d5273f4677ecb9a312d4b6ab87e2656'
@@ -20,6 +21,17 @@ const responseJSON = (res, ret) => {
   } else {
     res.json(ret)
   }
+}
+
+// 生成token
+const createToken = () => {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  const length = chars.length
+  let str = ''
+  for (let i = 0; i < length; i++) {
+    str += chars.substr(Math.round(Math.random() * length), 1)
+  }
+  return str
 }
 
 /* GET users listing. */
@@ -44,9 +56,10 @@ router.post('/login', (req, response) => {
   }
   request(authOptions, (err, res, body) => {
     if (err) {
-      return console.log(err);
+      return console.log('err:', err)
     }
     const wxUserData = JSON.parse(body)
+    console.log('wxUserData:', wxUserData)
     // 查看用户是否已经存在
     pool.getConnection((err, connection) => {
       connection.query(
@@ -54,14 +67,15 @@ router.post('/login', (req, response) => {
         [wxUserData.openid],
         (err, result) => {
           if (result) {
-            console.log(result.length)
+            // 如果result.length = 0，说明数据库没有此用户
             if (result.length === 0) {
-              console.log('add new user')
+              const token = createToken()
               connection.query(
                 userInfoSql.insert,
-                [reqData.username, wxUserData.openid],
+                [reqData.username, wxUserData.openid, token],
                 (err, result) => {
                   if (result) {
+                    console.log('222')
                     result = {
                       code: 200,
                       message: '新增用户成功'
@@ -69,7 +83,8 @@ router.post('/login', (req, response) => {
                     responseJSON(response, result)
                     connection.release()
                   } else {
-                    responseJSON(response, result)
+                    console.log('333')
+                    responseJSON(response, err)
                     connection.release()
                   }
                 })
@@ -85,22 +100,6 @@ router.post('/login', (req, response) => {
         }
       )
     })
-    // pool.getConnection((err, connection) => {
-    //   connection.query(
-    //     userInfoSql.insert,
-    //     [reqData.username, wxUserData.openid],
-    //     (err, result) => {
-    //       if (result) {
-    //         result = {
-    //           code: 200,
-    //           message: '新增用户成功'
-    //         }
-    //       }
-    //       responseJSON(response, result)
-    //       connection.release()
-    //     }
-    //   )
-    // })
   })
 })
 
