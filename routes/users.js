@@ -38,7 +38,7 @@ const createToken = () => {
 // login接口
 router.post('/login', (req, response) => {
   const reqData = req.body
-  const sentData = {
+  const sendData = {
     appid: wxConfig.AppID,
     secret: wxConfig.AppSecret,
     js_code: reqData.code,
@@ -48,7 +48,7 @@ router.post('/login', (req, response) => {
   const authOptions = {
     url: 'https://api.weixin.qq.com/sns/jscode2session',
     method: 'GET',
-    qs: sentData
+    qs: sendData
   }
   request(authOptions, (err, res, body) => {
     if (err) {
@@ -61,7 +61,6 @@ router.post('/login', (req, response) => {
         userInfoSql.getUserById,
         [wxUserData.openid],
         (err, result) => {
-          console.log(result)
           if (result) {
             // 如果result.length = 0，说明数据库没有此用户
             if (result.length === 0) {
