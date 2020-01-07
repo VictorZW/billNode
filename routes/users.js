@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const request = require('request')
 const mysql = require('mysql')
+const moment = require('moment')
 const dbConfjg = require('../db/DBConfig')
 const userInfoSql = require('../db/userInfoSql')
 const pool = mysql.createPool(dbConfjg.mysql)
@@ -101,6 +102,32 @@ router.post('/login', (req, response) => {
         }
       )
     })
+  })
+})
+
+router.post('/queryUserInfo', (req, res) => {
+  const reqData = req.body
+  console.log(reqData)
+  pool.getConnection((err, connection) => {
+    connection.query(
+      userInfoSql.queryUserInfoByToken,
+      [reqData.token],
+      (err, result) => {
+        if (result) {
+          result = {
+            code: 200,
+            msg: '操作成功',
+            result: {
+              userName: result[0].user_name,
+              registrationTime: moment(result[0].registration_time).format('YYYY-MM-DD HH:mm:ss'),
+              avatarUrl: result[0].avatarUrl
+            }
+          }
+        }
+        responseJSON(res, result)
+        connection.release()
+      }
+    )
   })
 })
 

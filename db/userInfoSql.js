@@ -5,7 +5,7 @@
  **/
 const userInfoSql = {
   insert: 'INSERT INTO user_info(user_name, openid, token, avatarUrl) VALUES(?,?,?,?)',
-  getUserById: 'SELECT * FROM user_info WHERE openid = ? ',
+  queryUserInfoByToken: 'SELECT * FROM user_info WHERE token = ? ',
   getAllUser: 'SELECT * FROM user_info'
 }
 module.exports = userInfoSql
