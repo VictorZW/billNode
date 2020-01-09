@@ -31,10 +31,13 @@ const responseJSON = (res, ret) => {
   }
 }
 
-router.get('/getAllBill', (req, res) => {
+router.post('/getAllBill', (req, res) => {
+  console.log(req.body)
   pool.getConnection((err, connection) => {
+    const param = req.body
     connection.query(
       billSQL.queryAll,
+      [param.token],
       (err, result) => {
         if (result) {
           result = {
@@ -56,7 +59,7 @@ router.post('/addBill', (req, res) => {
     const param = req.body
     connection.query(
       billSQL.insert,
-      [param.pay_date, param.cost, param.category, param.remark],
+      [param.pay_date, param.cost, param.category, param.remark, param.token],
       (err, result) => {
         if (result) {
           result = {

@@ -4,8 +4,8 @@
  * @desc:
  **/
 const billSQL = {
-  insert: 'INSERT INTO bill(pay_date, cost, category, remark) VALUES(?,?,?,?)',
-  queryAll: 'SELECT * FROM bill',
+  insert: 'INSERT INTO bill(pay_date, cost, category, remark, token) VALUES(?,?,?,?,?)',
+  queryAll: 'SELECT * FROM bill WHERE token = ?',
   getUserById: 'SELECT * FROM bill WHERE id = ? ',
   delUser: 'DELETE FROM bill WHERE id = ?',
   updateUserInfo: 'UPDATE bill SET pay_date=?, cost=?, category=?, remark=? WHERE userId = ?'
