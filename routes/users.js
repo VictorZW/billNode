@@ -74,7 +74,9 @@ router.post('/login', (req, response) => {
                       code: 200,
                       message: '新增用户成功',
                       result: {
-                        username: reqData.username,
+                        userName: reqData.username,
+                        registrationTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+                        avatarUrl: reqData.avatarUrl,
                         token: token
                       }
                     }
@@ -90,7 +92,9 @@ router.post('/login', (req, response) => {
                 code: 200,
                 message: '用户已存在',
                 result: {
-                  username: result[0].user_name,
+                  userName: result[0].user_name,
+                  registrationTime: moment(result[0].registration_time).format('YYYY-MM-DD HH:mm:ss'),
+                  avatarUrl: result[0].avatarUrl,
                   token: result[0].token
                 }
               }
@@ -119,7 +123,8 @@ router.post('/queryUserInfo', (req, res) => {
             result: {
               userName: result[0].user_name,
               registrationTime: moment(result[0].registration_time).format('YYYY-MM-DD HH:mm:ss'),
-              avatarUrl: result[0].avatarUrl
+              avatarUrl: result[0].avatarUrl,
+              token: result[0].token
             }
           }
         }
