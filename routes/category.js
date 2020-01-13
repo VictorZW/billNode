@@ -53,6 +53,7 @@ router.post('/addCategory', (req, res) => {
         if (result) {
           connection.query(
             categorySQL.queryAll,
+            [param.token],
             (err, result) => {
               if (result) {
                 result = {
