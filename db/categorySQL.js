@@ -4,7 +4,7 @@
  * @desc:
  **/
 const categorySQL = {
-  insert: 'INSERT INTO category(category) VALUES(?)',
+  insert: 'INSERT INTO category(category, token) VALUES(?,?)',
   queryAll: 'SELECT * FROM category',
   delUser: 'DELETE FROM category WHERE id = ?'
 };

@@ -46,7 +46,7 @@ router.post('/addCategory', (req, res) => {
     const param = req.body
     connection.query(
       categorySQL.insert,
-      [param.category],
+      [param.category, param.token],
       (err, result) => {
         if (result) {
           connection.query(
