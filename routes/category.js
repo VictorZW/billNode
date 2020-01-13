@@ -23,9 +23,11 @@ const responseJSON = (res, ret) => {
 
 // 查询所有账单分类类型
 router.get('/getCategory', (req, res) => {
+  const param = req.query
   pool.getConnection((err, connection) => {
     connection.query(
       categorySQL.queryAll,
+      [param.token],
       (err, result) => {
         if (result) {
           result = {

@@ -5,7 +5,7 @@
  **/
 const categorySQL = {
   insert: 'INSERT INTO category(category, token) VALUES(?,?)',
-  queryAll: 'SELECT * FROM category',
+  queryAll: 'SELECT * FROM category WHERE token = ?',
   delUser: 'DELETE FROM category WHERE id = ?'
 };
 module.exports = categorySQL
