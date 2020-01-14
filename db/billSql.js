@@ -5,9 +5,9 @@
  **/
 const billSQL = {
   insert: 'INSERT INTO bill(pay_date, cost, category, remark, token) VALUES(?,?,?,?,?)',
-  queryAll: 'SELECT * FROM bill WHERE token = ? ORDER BY pay_date DESC',
+  queryAll: 'SELECT * FROM bill WHERE token = ? AND pay_date between ? and ? ORDER BY pay_date DESC',
   getUserById: 'SELECT * FROM bill WHERE id = ? ',
   delUser: 'DELETE FROM bill WHERE id = ?',
   updateUserInfo: 'UPDATE bill SET pay_date=?, cost=?, category=?, remark=? WHERE userId = ?'
-};
+}
 module.exports = billSQL

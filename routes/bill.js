@@ -37,7 +37,7 @@ router.post('/getAllBill', (req, res) => {
     const param = req.body
     connection.query(
       billSQL.queryAll,
-      [param.token],
+      [param.token, param.startTime, param.endTime],
       (err, result) => {
         if (result) {
           result = {
