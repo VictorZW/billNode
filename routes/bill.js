@@ -102,7 +102,7 @@ const handleResData = (resArr) => {
     })
     sendRes.push({
       category: item.category,
-      cost: sum
+      cost: sum.toFixed(2)
     })
   })
   return sendRes
