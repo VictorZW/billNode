@@ -40,10 +40,15 @@ router.post('/getAllBill', (req, res) => {
       [param.token, param.startTime, param.endTime],
       (err, result) => {
         if (result) {
+          let sum = 0
+          result.map(item => {
+            sum += Number(item.cost)
+          })
           result = {
             code: 200,
             msg: '操作成功',
-            result: result
+            result: result,
+            sum: sum.toFixed(2)
           }
         }
         responseJSON(res, result)
@@ -63,10 +68,15 @@ router.post('/getBillReport', (req, res) => {
         if (result) {
           const resArr = JSON.parse(JSON.stringify(result))
           const getDataArr = handleResData(resArr)
+          let sum = 0
+          getDataArr.map(item => {
+            sum += Number(item.value)
+          })
           result = {
             code: 200,
             msg: '操作成功',
-            result: getDataArr
+            result: getDataArr,
+            sum: sum.toFixed(2)
           }
         }
         responseJSON(res, result)
@@ -98,7 +108,7 @@ const handleResData = (resArr) => {
   getDataArr.forEach((item) => {
     let sum = 0
     item.data.forEach((listData) => {
-      sum += listData.cost
+      sum += Number(listData.cost)
     })
     sendRes.push({
       name: item.category,
