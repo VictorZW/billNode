@@ -101,8 +101,8 @@ const handleResData = (resArr) => {
       sum += listData.cost
     })
     sendRes.push({
-      category: item.category,
-      cost: sum.toFixed(2)
+      name: item.category,
+      value: sum.toFixed(2)
     })
   })
   return sendRes
