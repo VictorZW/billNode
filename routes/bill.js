@@ -53,6 +53,61 @@ router.post('/getAllBill', (req, res) => {
   })
 })
 
+router.post('/getBillReport', (req, res) => {
+  pool.getConnection((err, connection) => {
+    const param = req.body
+    connection.query(
+      billSQL.queryAll,
+      [param.token, param.startTime, param.endTime],
+      (err, result) => {
+        if (result) {
+          const resArr = JSON.parse(JSON.stringify(result))
+          const getDataArr = handleResData(resArr)
+          result = {
+            code: 200,
+            msg: '操作成功',
+            result: getDataArr
+          }
+        }
+        responseJSON(res, result)
+        connection.release()
+      }
+    )
+  })
+})
+
+const handleResData = (resArr) => {
+  const map = {}
+  const getDataArr = []
+  const sendRes = []
+  resArr.map((item) => {
+    if (!map[item.category]) {
+      getDataArr.push({
+        category: item.category,
+        data: [item]
+      })
+      map[item.category] = item
+    } else {
+      getDataArr.map((getData) => {
+        if (getData.category === item.category) {
+          getData.data.push(item)
+        }
+      })
+    }
+  })
+  getDataArr.forEach((item) => {
+    let sum = 0
+    item.data.forEach((listData) => {
+      sum += listData.cost
+    })
+    sendRes.push({
+      category: item.category,
+      cost: sum
+    })
+  })
+  return sendRes
+}
+
 router.post('/addBill', (req, res) => {
   console.log(req.body)
   pool.getConnection((err, connection) => {
