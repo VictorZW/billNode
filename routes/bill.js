@@ -8,6 +8,7 @@ const router = express.Router()
 const mysql = require('mysql')
 const dbConfjg = require('../db/DBConfig')
 const billSQL = require('../db/billSql')
+const moment = require('moment')
 
 // 测试数据库是否连接成功
 let connection = mysql.createConnection(dbConfjg.mysql);
@@ -43,6 +44,7 @@ router.post('/getAllBill', (req, res) => {
           let sum = 0
           result.map(item => {
             sum += Number(item.cost)
+            item.pay_date = moment(item.pay_date).format('YYYY-MM-DD HH:mm:ss')
           })
           result = {
             code: 200,
