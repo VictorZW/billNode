@@ -44,7 +44,7 @@ router.post('/getAllBill', (req, res) => {
           let sum = 0
           result.map(item => {
             sum += Number(item.cost)
-            item.pay_date = moment(item.pay_date).format('YYYY-MM-DD HH:mm:ss')
+            item.pay_date = moment(item.pay_date).format('YYYY-MM-DD')
           })
           result = {
             code: 200,
