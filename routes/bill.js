@@ -141,4 +141,25 @@ router.post('/addBill', (req, res) => {
   })
 })
 
+router.post('/delBill', (req, res) => {
+  console.log(req.body)
+  pool.getConnection((err, connection) => {
+    const param = req.body
+    connection.query(
+      billSQL.delBill,
+      [param.token, param.id],
+      (err, result) => {
+        if (result) {
+          result = {
+            code: 200,
+            message: '操作成功'
+          }
+        }
+        responseJSON(res, result)
+        connection.release()
+      }
+    )
+  })
+})
+
 module.exports = router
