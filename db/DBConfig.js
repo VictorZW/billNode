@@ -5,10 +5,10 @@
  **/
 module.exports = {
   mysql: {
-    host: 'rm-uf6bske15466z7b43do.mysql.rds.aliyuncs.com',
+    host: '101.132.179.61',
     user: 'root',
-    password: 'Admin123456',
-    database:'bill', // 前面建的user表位于这个数据库中
+    password: 'admin123456',
+    database:'bill_app',
     port: 3306
   }
 }
